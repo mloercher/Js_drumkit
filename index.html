@@ -1,87 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>JS Drum Kit</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-
-  <div class="keys">
-    <div data-key="65" class="key" src="sounds/kick.wav">
-      <kbd>A</kbd>
-      <span class="sound">KICK</span>
+  <head>
+    <meta charset="UTF-8" />
+    <title>JS Drum Kit</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="keys">
+      <div data-key="65" class="key" src="sounds/snare.wav">
+        <kbd>A</kbd>
+        <span class="sound">KICK</span>
+      </div>
+      <div data-key="83" class="key" src="sounds/closedHat.wav">
+        <kbd>S</kbd>
+        <span class="sound">SNARE</span>
+      </div>
+      <div data-key="69" class="key" src="sounds/snare.wav">
+        <kbd>E</kbd>
+        <span class="sound">CLOSED HAT</span>
+      </div>
+      <div data-key="82" class="key" src="sounds/openHat.wav">
+        <kbd>R</kbd>
+        <span class="sound">OPEN HAT</span>
+      </div>
+      <div data-key="71" class="key" src="sounds/kick.wav">
+        <kbd>G</kbd>
+        <span class="sound">BOOM</span>
+      </div>
+      <div data-key="72" class="key" src="sounds/kick.wav">
+        <kbd>H</kbd>
+        <span class="sound">RIDE</span>
+      </div>
+      <div data-key="74" class="key" src="sounds/kick.wav">
+        <kbd>J</kbd>
+        <span class="sound">SNARE</span>
+      </div>
+      <div data-key="75" class="key" src="sounds/kick.wav">
+        <kbd>K</kbd>
+        <span class="sound">TOM</span>
+      </div>
+      <div data-key="76" class="key" src="sounds/kick.wav">
+        <kbd>L</kbd>
+        <span class="sound">RIDE</span>
+      </div>
     </div>
-    <div data-key="83" class="key">
-      <kbd>S</kbd>
-      <span class="sound">CLOSED HAT</span>
-    </div>
-    <div data-key="68" class="key">
-      <kbd>D</kbd>
-      <span class="sound">KICK</span>
-    </div>
-    <div data-key="70" class="key">
-      <kbd>F</kbd>
-      <span class="sound">OPEN HAT</span>
-    </div>
-    <div data-key="71" class="key">
-      <kbd>G</kbd>
-      <span class="sound">BOOM</span>
-    </div>
-    <div data-key="72" class="key">
-      <kbd>H</kbd>
-      <span class="sound">RIDE</span>
-    </div>
-    <div data-key="74" class="key">
-      <kbd>J</kbd>
-      <span class="sound">SNARE</span>
-    </div>
-    <div data-key="75" class="key">
-      <kbd>K</kbd>
-      <span class="sound">TOM</span>
-    </div>
-    <div data-key="76" class="key">
-      <kbd>L</kbd>
-      <span class="sound">RIDE</span>
-    </div>
-  </div>
 
-  <audio data-key="65" src="sounds/clap.wav"></audio>
-  <audio data-key="83" src="sounds/hihat.wav"></audio>
-  <audio data-key="68" src="sounds/kick.wav"></audio>
-  <audio data-key="70" src="sounds/openhat.wav"></audio>
-  <audio data-key="71" src="sounds/boom.wav"></audio>
-  <audio data-key="72" src="sounds/ride.wav"></audio>
-  <audio data-key="74" src="sounds/snare.wav"></audio>
-  <audio data-key="75" src="sounds/tom.wav"></audio>
-  <audio data-key="76" src="sounds/tink.wav"></audio>
+    <audio data-key="65" src="sounds/boom.wav"></audio>
+    <audio data-key="83" src="sounds/snare.wav"></audio>
+    <audio data-key="69" src="sounds/closedHat.wav"></audio>
+    <audio data-key="82" src="sounds/openhat.wav"></audio>
+    <audio data-key="71" src="sounds/boom.wav"></audio>
+    <audio data-key="72" src="sounds/ride.wav"></audio>
+    <audio data-key="74" src="sounds/snare.wav"></audio>
+    <audio data-key="75" src="sounds/tom.wav"></audio>
+    <audio data-key="76" src="sounds/tink.wav"></audio>
 
+    <!-- when key is pressed (keydown), function is triggered and event (e) is returned as object -->
 
-<!-- when key is pressed (keydown), function is triggered and event (e) is returned as object -->
+    <script>
+      // backticks used to make template literal --- when key is pressed, function fires. audio element will be selected based on keyCode(stored in event object)
+      function playSound(e) {
+        const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
 
-<script>
-// backticks used to make template literal --- when key is pressed, function fires. audio element will be selected based on keyCode(stored in event object) 
-window.addEventListener('keydown', function (e){
-    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`)
-    
-    // selects element w class of key ---for styling purposes to chnage
-    const key = document.querySelector(`.key[data-key="${e.keyCode}"]`)
-    console.log(audio)
-    // if there is no audio linked with pressed key, stop function from running 
-    if (!audio) return; 
+        // selects element w class of key ---for styling purposes to chnage
+        const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+        console.log(audio);
+        // if there is no audio linked with pressed key, stop function from running
+        if (!audio) return;
 
-    // plays audio from START w each keydown VS waiting until sound is over to play again
-    audio.currentTime = 0; 
-    // if there IS audio linked with pressed key, play the audio
-    audio.play();
+        // plays audio from START w each keydown VS waiting until sound is over to play again
+        audio.currentTime = 0;
+        // if there IS audio linked with pressed key, play the audio
+        audio.play();
 
-    // adds class of 'playing' each time key is pressed
-    key.classList.add('playing');
+        // adds class of 'playing' each time key is pressed
+        key.classList.add("playing");
+      }
 
-})
-</script>
+      function removeTransition(e) {
+        if (e.propertyName !== "transform") return;
+        // console.log(e.propertyName);
+        this.classList.remove("playing");
+      }
 
+      const keys = document.querySelectorAll(".key");
+      keys.forEach((key) =>
+        key.addEventListener("transitionend", removeTransition)
+      );
 
-</body>
+      window.addEventListener("keydown", playSound);
+    </script>
+  </body>
 </html>
